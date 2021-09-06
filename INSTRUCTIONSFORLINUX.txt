@@ -1,0 +1,53 @@
+J'ai réussit à faire marcher tout ça.
+J'espère que les instructions marcheront chez vous :
+
+
+=======================================
+1) Installer libccid.
+   Sous debian, je le fais comme ça :
+
+sudo aptitude install libccid
+# le package pcscd vient avec
+
+# patcher la liste des devices connues
+wget http://ludovic.rousseau.free.fr/softwares/pcsc-tools/smartcard_list.txt
+sudo cp smartcard_list.txt /usr/share/pcsc/smartcard_list.txt
+
+
+
+2) Récupérer la lib d'origine (chez Didier)
+
+wget http://membres-liglab.imag.fr/donsez/pub/tikitag/tikitagreader.zip
+unzip tikitagreader.zip tikitagreader/lib/tikitag-client-1.0-SNAPSHOT-jar-with-dependencies.jar
+mkdir lib
+mv tikitagreader/lib/tikitag-client-1.0-SNAPSHOT-jar-with-dependencies.jar ./lib/
+rmdir tikitagreader/lib/
+rmdir tikitagreader/
+rm -f tikitagreader.zip
+
+
+3) Récupérer et compiler la version patchée du client
+
+mkdir -p com/tikitag/client
+wget 'http://svn.forge.objectweb.org/cgi-bin/viewcvs.cgi/*checkout*/aspire/sandbox/donsez/tikitagreader/src/main/java/com/tikitag/client/TikitagClient.java?rev=268'
+mv 'TikitagClient.java?rev=268' com/tikitag/client/TikitagClient.java
+
+sed -i '202,+7 s@.*@// \0@g' com/tikitag/client/TikitagClient.java
+
+javac -cp lib/tikitag-client-1.0-SNAPSHOT-jar-with-dependencies.jar com/tikitag/client/TikitagClient.java
+java -cp .:lib/tikitag-client-1.0-SNAPSHOT-jar-with-dependencies.jar com.tikitag.client.TikitagClient
+
+# chez moi, j'ai des problèmes pour la connection RMI mais c'est pas bloquant
+=======================================
+
+
+Pour info, voici le comportement de la led du lecteur :
+ - pas de libccid -> clignotement lent
+ - libccid installée -> allumée en permanence
+ - en cours d'utilisation -> clignotement rapide
+
+
+On a aussi un service omiscid pour les connaisseurs  :) , et j'ai un client qui peux locker/delocker mon poste de travail avec un tag  :) .
+
+J'espère que ce sera utile,
+Rémi

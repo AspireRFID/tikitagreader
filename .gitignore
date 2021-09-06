@@ -1,0 +1,6 @@
+.DS_Store
+target
+.svn
+*.log
+.classpath
+.project

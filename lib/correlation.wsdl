@@ -1,0 +1,180 @@
+<definitions name='CorrelationProxy' targetNamespace='http://www.tikitag.com' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://www.tikitag.com' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types>
+  <xs:schema targetNamespace='http://www.tikitag.com' version='1.0' xmlns:tns='http://www.tikitag.com' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+   <xs:element name='CorrelatorException' nillable='true' type='tns:CorrelatorException'/>
+   <xs:element name='changeEvent' type='tns:changeEvent'/>
+   <xs:element name='getTikitagAction' nillable='true' type='tns:tagEvent'/>
+   <xs:element name='getTikitagActionResponse' nillable='true' type='tns:tikitagAction'/>
+   <xs:element name='ping' nillable='true' type='tns:pingEvent'/>
+   <xs:element name='pingEvent' type='tns:pingEvent'/>
+   <xs:element name='tagEvent' type='tns:tagEvent'/>
+   <xs:element name='tikitagAction' type='tns:tikitagAction'/>
+   <xs:complexType name='pingEvent'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='clientId' type='tns:clientId'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='clientId'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='id' type='xs:string'/>
+     <xs:element minOccurs='0' name='name' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='CorrelatorException'>
+    <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name='tagEvent'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='clientId' type='tns:clientId'/>
+     <xs:element minOccurs='0' name='readerId' type='tns:readerId'/>
+     <xs:element minOccurs='0' name='actionTag' type='tns:tagInfo'/>
+     <xs:element minOccurs='0' name='contextTag' type='tns:tagInfo'/>
+    </xs:sequence>
+    <xs:attribute name='tagEventType' type='tns:tagEventType'/>
+   </xs:complexType>
+   <xs:complexType final='extension restriction' name='readerId'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='uid' type='xs:base64Binary'/>
+     <xs:element minOccurs='0' name='serialNr' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='tagInfo'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='tagId' type='tns:tagId'/>
+     <xs:element minOccurs='0' name='tagData' type='xs:base64Binary'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name='tagId'>
+    <xs:restriction base='xs:string'/>
+   </xs:simpleType>
+   <xs:complexType name='tikitagAction'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='container' type='tns:configContainerXML'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='configContainerXML'>
+    <xs:sequence>
+     <xs:element maxOccurs='unbounded' minOccurs='0' name='container' type='tns:configContainerXML'/>
+     <xs:element maxOccurs='unbounded' minOccurs='0' name='attribute' type='tns:configAttribute'/>
+    </xs:sequence>
+    <xs:attribute name='name' type='xs:string'/>
+   </xs:complexType>
+   <xs:complexType name='configAttribute'>
+    <xs:sequence>
+     <xs:choice minOccurs='0'>
+      <xs:element name='int' type='xs:int'/>
+      <xs:element name='long' type='xs:long'/>
+      <xs:element name='double' type='xs:double'/>
+      <xs:element name='string' type='xs:string'/>
+      <xs:element name='boolean' type='xs:boolean'/>
+     </xs:choice>
+    </xs:sequence>
+    <xs:attribute name='name' type='xs:string'/>
+   </xs:complexType>
+   <xs:complexType name='changeEvent'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='clientId' type='tns:clientId'/>
+     <xs:choice minOccurs='0'>
+      <xs:element name='newReader' type='tns:newReaderEvent'/>
+      <xs:element name='clientNameChange' type='tns:clientNameChange'/>
+     </xs:choice>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='newReaderEvent'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='readerId' type='tns:readerId'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name='clientNameChange'>
+    <xs:sequence>
+     <xs:element minOccurs='0' name='newClientName' type='xs:string'/>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name='tagEventType'>
+    <xs:restriction base='xs:string'>
+     <xs:enumeration value='PUT'/>
+     <xs:enumeration value='TOUCH'/>
+     <xs:enumeration value='REMOVE'/>
+    </xs:restriction>
+   </xs:simpleType>
+  </xs:schema>
+ </types>
+ <message name='Tikitag_changeEvent'>
+  <part element='tns:changeEvent' name='changeEvent'></part>
+ </message>
+ <message name='Tikitag_pingResponse'></message>
+ <message name='Tikitag_getTikitagActionResponse'>
+  <part element='tns:getTikitagActionResponse' name='getTikitagActionResponse'></part>
+ </message>
+ <message name='Tikitag_ping'>
+  <part element='tns:ping' name='ping'></part>
+ </message>
+ <message name='CorrelatorException'>
+  <part element='tns:CorrelatorException' name='CorrelatorException'></part>
+ </message>
+ <message name='Tikitag_changeEventResponse'></message>
+ <message name='Tikitag_getTikitagAction'>
+  <part element='tns:getTikitagAction' name='getTikitagAction'></part>
+ </message>
+ <portType name='Tikitag'>
+  <operation name='changeEvent' parameterOrder='changeEvent'>
+   <input message='tns:Tikitag_changeEvent'></input>
+   <output message='tns:Tikitag_changeEventResponse'></output>
+   <fault message='tns:CorrelatorException' name='CorrelatorException'></fault>
+  </operation>
+  <operation name='getTikitagAction' parameterOrder='getTikitagAction'>
+   <input message='tns:Tikitag_getTikitagAction'></input>
+   <output message='tns:Tikitag_getTikitagActionResponse'></output>
+   <fault message='tns:CorrelatorException' name='CorrelatorException'></fault>
+  </operation>
+  <operation name='ping' parameterOrder='ping'>
+   <input message='tns:Tikitag_ping'></input>
+   <output message='tns:Tikitag_pingResponse'></output>
+   <fault message='tns:CorrelatorException' name='CorrelatorException'></fault>
+  </operation>
+ </portType>
+ <binding name='TikitagBinding' type='tns:Tikitag'>
+  <soap:binding style='document' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='changeEvent'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='CorrelatorException'>
+    <soap:fault name='CorrelatorException' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='getTikitagAction'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='CorrelatorException'>
+    <soap:fault name='CorrelatorException' use='literal'/>
+   </fault>
+  </operation>
+  <operation name='ping'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body use='literal'/>
+   </input>
+   <output>
+    <soap:body use='literal'/>
+   </output>
+   <fault name='CorrelatorException'>
+    <soap:fault name='CorrelatorException' use='literal'/>
+   </fault>
+  </operation>
+ </binding>
+ <service name='CorrelationProxy'>
+  <port binding='tns:TikitagBinding' name='TikitagPort'>
+   <soap:address location='http://acs.tikitag.com:8080/tikitag-soap/correlation'/>
+  </port>
+ </service>
+</definitions>
