@@ -12,6 +12,7 @@ The patched version of the Tikitag client (in ./src/java/com/tikitag/client) cal
 References:
 * https://www.acr122.com/
 * https://www.acs.com.hk/download-manual/419/API-ACR122U-2.04.pdf
+* https://www.acs.com.hk/download-manual/418/TSP-ACR122U-3.06.pdf
 * https://www.nfc-tools.org/index.php?title=ACR122
 * http://code.google.com/p/tikitagdev (licence Apache Software Licence v2.0)
 * http://tikitagdev.googlecode.com/files/tikitag-client-1.0-SNAPSHOT-jar-with-dependencies.jar
