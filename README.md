@@ -1,5 +1,7 @@
 # Tikitag ALE Reader
 
+![Tikitag Reader](./doc/tikitag.jpg)
+
 This OSGi bundle generates ALE events from NFC tags data read from a Tikitag reader.
 
 It is based on the Tikitag client
